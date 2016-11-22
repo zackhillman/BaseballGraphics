@@ -54,4 +54,7 @@ public class Team {
 		return true;
 	}
 	
+	public CircleLinkedList<Player> getOrder(){
+		return battingOrder;
+	}
 }

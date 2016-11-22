@@ -10,43 +10,48 @@ public class Application implements ActionListener{
     private JButton edit;
     private JButton reset;
     private JTextField nameF;
+    private JTable stats;
     
-    private static final int WIDTH = 790;
+    private static final int WIDTH = 1100;
     private static final int HEIGHT = 900;
 
     private static final int GAP = 5;
     
 
     private void displayGUI () {
-        JFrame frame = new JFrame ( "" );
-        frame.setDefaultCloseOperation ( JFrame.DISPOSE_ON_CLOSE );
+        JFrame frame = new JFrame ("");
+        frame.setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
 
-        JPanel contentPane = new JPanel ();
+        JPanel contentPane = new JPanel();
         contentPane.setLayout (null);
         
         nameF = new JTextField("");
         contentPane.add(nameF);
-        nameF.setBounds(10,845,250,30);
+        nameF.setBounds(800,55,250,30);
         
         add = new JButton ( "Add" );
         add.addActionListener (this);
         contentPane.add(add);
-        add.setBounds(270, 840, 80, 40);
+        add.setBounds(800, 110, 80, 40);
         
         hit = new JButton ( "Hit" );
         hit.addActionListener (this);
         contentPane.add (hit );
-        hit.setBounds(355, 840, 80, 40);
+        hit.setBounds(890, 110, 80, 40);
         
         edit = new JButton ( "Edit" );
         edit.addActionListener (this);
         contentPane.add (edit);
-        edit.setBounds(440, 840, 80, 40);
+        edit.setBounds(980, 110, 80, 40);
 
         
         field = new Field ();
         contentPane.add ( field );
-        field.setBounds(0, 0, 790, 840);
+        field.setBounds(0, 0, 790, 810);
+        
+        stats = new JTable (new String[][]{"test"}{"test"},Game.getAllPlayers());
+        contentPane.add ( stats );
+        stats.setBounds(800, 170, 700, 620);
 
         
        

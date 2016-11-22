@@ -43,6 +43,16 @@ public class CircleLinkedList<T> {
 			current = current.getNext();
 	}
 	
+	private int getSize(){
+		ListNode<T> currentNode = head;
+		int count= 0;
+		while(currentNode.getNext()!=head){
+			currentNode = currentNode.getNext();
+			count++;
+		}
+		return count;
+	}		
+	
 	public String toString(){
 		ListNode<T> currentNode = head;
 		String str = "\n\n"+currentNode.getValue().toString();
@@ -52,5 +62,15 @@ public class CircleLinkedList<T> {
 			str+="\n\n"+currentNode.getValue().toString();
 		}
 		return str;
+	}
+	public T[] toArray(){
+		ListNode<T> currentNode = head;
+		Object[] array = new Object[getSize()];
+		T[] newArray = (T[])array;
+		for(T t: newArray){
+			t = currentNode.getValue();
+			currentNode = currentNode.getNext();
+		}
+		return newArray;
 	}
 }

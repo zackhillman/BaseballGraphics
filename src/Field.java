@@ -49,7 +49,7 @@ public class Field extends JPanel {
     @Override
     protected void paintComponent ( Graphics g ) {
         super.paintComponent ( g );
-        g.drawImage(background, 0,50,this);
+        g.drawImage(background, 0,20,this);
 //        g.drawRect ( 50, RADIUS, X, Y );
 //        g.drawRect ( 100, RADIUS, X, Y );
 //        g.drawRect ( 150, RADIUS, X, Y );
@@ -64,17 +64,18 @@ public class Field extends JPanel {
         
         g.setColor ( Color.RED );
         g.drawString("Away: "+Game.getAwayScore(), 10, 140);
+        g.drawString("Outs: "+Game.outs, 10, 740);
         if(Game.half==true)
         	g.drawString("Inning: "+Game.currentInning+ " ▲", 10, 800);
         else
         	g.drawString("Inning: "+Game.currentInning+" ▼", 10, 800);
         g.setFont(new Font("TimesRoman", Font.BOLD, 60));
         if(Game.bases[0]!=null)
-        	g.fillRect(613, 447, 50, 50);
+        	g.fillRect(613, 417, 50, 50);
         if(Game.bases[1]!=null)
-        	g.fillRect(370, 200, 50, 50);
+        	g.fillRect(370, 170, 50, 50);
         if(Game.bases[2]!=null)
-        	g.fillRect(125, 447, 50, 50);
+        	g.fillRect(125, 417, 50, 50);
         if(Game.currentEvent!=null)
         	g.drawString(Game.currentEvent.name(), 300, 500);
        

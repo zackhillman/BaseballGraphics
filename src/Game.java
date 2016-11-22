@@ -26,7 +26,7 @@ public class Game  {
 	
 	private JTextField nameF;
 	
-	private static int outs;
+	public static int outs;
 	
 	public static ActionType currentEvent;
 	
@@ -149,6 +149,16 @@ public class Game  {
 			return awayTeam.getScore();
 		}
 	
+		public static String[] getAllPlayers(){
+			String [] playerNames = new String[18];
+			int index = 0;
+			while(index < 9){
+				Player[] players = homeTeam.getOrder().toArray();
+				playerNames[index] = players[index].getName();
+				
+			}
+			return playerNames;
+		}
 	
 	
 		
