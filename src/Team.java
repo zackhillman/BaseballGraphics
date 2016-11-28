@@ -1,3 +1,7 @@
+import java.util.Iterator;
+
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class Team {
 
@@ -6,6 +10,8 @@ public class Team {
 	private CircleLinkedList<Player> battingOrder;
 	private LinkedList<Player> substituteList;
 	private final int TEAM_SIZE = 9;
+	
+
 	
 	private int score;
 	
@@ -21,6 +27,13 @@ public class Team {
 			throw new IllegalArgumentException("Team is full");
 		battingOrder.add(p);
 		playerCount++;
+	}
+	
+	public void editPlayer(Player p){
+		substituteList.add(battingOrder.getCurrent());
+		System.out.println(battingOrder.getCurrent());
+		battingOrder.set(p);
+		
 	}
 	
 	public int getPlayerCount(){
@@ -57,4 +70,25 @@ public class Team {
 	public CircleLinkedList<Player> getOrder(){
 		return battingOrder;
 	}
+	
+	
+	public DefaultTableModel toTable(){
+		
+	
+		Iterator<Player> boIter = battingOrder.iterator();
+		DefaultTableModel model = new DefaultTableModel();
+		model.setColumnIdentifiers(new Object[] {"Name","Outs","Singles","Doubles","Triples","Homeruns","Walks"});
+		while(boIter.hasNext())
+			model.addRow(boIter.next().toArray());
+		if(isFull())
+			model.addRow(new Object[]{"Substitute List"});
+		Iterator<Player> subIter = substituteList.iterator();
+		while(subIter.hasNext())
+			model.addRow(subIter.next().toArray());
+
+		
+		return model;
+	}
+		
+	
 }

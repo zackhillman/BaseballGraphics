@@ -52,4 +52,7 @@ public class Player {
 		return name;
 	}
 	
+	public Object[] toArray(){
+		return new Object[]{name,outs,singles,doubles,triples,homeruns,walks};
+	}
 }

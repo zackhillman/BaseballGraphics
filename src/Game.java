@@ -10,10 +10,12 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 public class Game  {
 
 	private final static int INNINGS = 9;
+	private final static int BOX_LENGTH = 37;
 	private final int OUTS = 3;
 	
 	private static Team homeTeam;
@@ -32,18 +34,19 @@ public class Game  {
 	
 	public static boolean gameOver;
 
-
+	public static DefaultListModel<String> gameLog;
 
 	public static void init(){
 		
 		bases = new Player[4];
-		
+		currentInning = 1;
 		homeTeam = new Team();
 		awayTeam = new Team(); 
-
+		gameLog = new DefaultListModel<String>();
 		half = true;
 		gameOver = false;
-
+		addDivider();
+		//gameLog.
 	}
 	
 	public static void add(Player p){
@@ -53,10 +56,42 @@ public class Game  {
 			awayTeam.addPlayer(p);
 	}
 	
+	public static void edit(Player p){
+		getTeamAtBat().editPlayer(p);
+		System.out.println(p);
+	}
+	
 	public static void hit(){
 		if(!gameOver){
 			currentEvent = getRandom();
+			
+			gameLog.addElement(currentEvent.toString());
+			
 			doAction(currentEvent);
+		}
+		
+		
+		//═
+	}
+
+	private static void addDivider(){
+		String halfS = "Top";
+		if(!half) halfS = "Bottom";
+		String currentI= currentInning+getEnd(currentInning);
+		gameLog.addElement("║"+halfS+" of the "+currentI+"║\n");
+		
+	//	textarea.setText("Here is some <b>bold text</b>");
+
+	}
+	
+	
+	private static String getEnd(int ci) {
+		
+		switch(ci){
+			case 1: return "st";	
+			case 2: return "nd";
+			case 3: return "rd";
+			default: return "th";
 		}
 		
 	}
@@ -82,16 +117,16 @@ public class Game  {
 		if(a == ActionType.OUT){
 			outs++;
 			if(outs==3){
+				
 				if(currentInning==INNINGS&&homeTeam.getScore()>awayTeam.getScore()){
 					gameOver = true;
-					
-					
 				}else{
 					half = !half;
 					if(half)
 						currentInning++;
 					outs = 0;
 					bases = new Player[4];
+					addDivider();
 				}
 			}
 		}
@@ -149,19 +184,28 @@ public class Game  {
 			return awayTeam.getScore();
 		}
 	
-		public static String[] getAllPlayers(){
-			String [] playerNames = new String[18];
-			int index = 0;
-			while(index < 9){
-				Player[] players = homeTeam.getOrder().toArray();
-				playerNames[index] = players[index].getName();
-				
-			}
-			return playerNames;
+//		public static String[] getAllPlayers(){
+//			String [] playerNames = new String[18];
+//			int index = 0;
+//			while(index < 9){
+//				Player[] players = homeTeam.getOrder().toArray();
+//				playerNames[index] = players[index].getName();
+//				
+//			}
+//			return playerNames;
+//		}
+	
+		public static DefaultTableModel homeTeamTable(){
+			return homeTeam.toTable();
 		}
-	
-	
 		
+		public static DefaultTableModel awayTeamTable(){
+			return awayTeam.toTable();
+		}
+		
+		public static boolean awayTeamFull(){
+			return awayTeam.isFull();
+		}
 
 	
 }

@@ -1,6 +1,7 @@
 import java.util.Iterator;
+import java.util.ListIterator;
 
-public class CircleLinkedList<T> {
+public class CircleLinkedList<T> implements Iterable<T> {
 
 	private ListNode<T> head;
 	private ListNode<T> current;
@@ -26,6 +27,12 @@ public class CircleLinkedList<T> {
 				currentNode.setNext(new ListNode<T>(element,head));	
 		}
 	}
+	
+	public void set(T newElement){
+		current.setValue(newElement);
+	}
+	
+
 	/**
 	 * This method gets the current element in the linked list
 	 * @return- the current T element
@@ -44,6 +51,7 @@ public class CircleLinkedList<T> {
 	}
 	
 	private int getSize(){
+		if(head ==null)return 0;
 		ListNode<T> currentNode = head;
 		int count= 0;
 		while(currentNode.getNext()!=head){
@@ -63,14 +71,69 @@ public class CircleLinkedList<T> {
 		}
 		return str;
 	}
-	public T[] toArray(){
-		ListNode<T> currentNode = head;
-		Object[] array = new Object[getSize()];
-		T[] newArray = (T[])array;
-		for(T t: newArray){
-			t = currentNode.getValue();
-			currentNode = currentNode.getNext();
-		}
-		return newArray;
+//	public T[] toArray(){
+//		ListNode<T> currentNode = head;
+//		Object[] array = new Object[getSize()];
+//		T[] newArray = (T[])array;
+//		for(int i = 0;i<getSize();i++){
+//			newArray[i] = currentNode.getValue();
+//			currentNode = currentNode.getNext();
+//		}
+//		return newArray;
+//	}
+	
+	
+	public Iterator<T> iterator() {
+		// TODO Auto-generated method stub
+		return new LinkedListIterator();
 	}
+	
+	/**
+	 * This class iterates through the linked list
+	 */
+	public class LinkedListIterator implements Iterator<T>{
+		//Instance Variables
+		private ListNode<T> current; //Tracks the current node
+		
+		private boolean removable; //If removable, can use the remove method
+		
+		/**
+		 * This is the constructor, removable is set to false, current and previous are instantiated
+		 */
+		public LinkedListIterator(){
+			removable = false;
+			current = new ListNode<T>(null, head);
+			
+		}
+		/**
+		 * This method checks if there is a next node
+		 * @return- true if a next node exists
+		 * 			false if a next node does not exist
+		 */
+		public boolean hasNext() {
+			if(current.getValue() ==null)
+				return true;
+			return current.getNext()!=head;
+		}
+	
+		/**
+		 * This method gets the next node and increments the iterator
+		 * @return- the node after the current	
+		 */
+		public T next() {
+			removable = true;
+			current = current.getNext();
+			return current.getValue();
+			
+		}
+		/**
+		 * Throws error, unsupported operation
+		 */
+		public void remove(){
+			throw new UnsupportedOperationException();		
+		}
+		
+		
+	}
+	
 }

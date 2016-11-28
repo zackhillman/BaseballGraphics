@@ -1,8 +1,10 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
 
@@ -49,36 +51,33 @@ public class Field extends JPanel {
     @Override
     protected void paintComponent ( Graphics g ) {
         super.paintComponent ( g );
-        g.drawImage(background, 0,20,this);
-//        g.drawRect ( 50, RADIUS, X, Y );
-//        g.drawRect ( 100, RADIUS, X, Y );
-//        g.drawRect ( 150, RADIUS, X, Y );
-//        g.drawRect ( 200, RADIUS, X, Y );
-//        g.drawRect ( 250, RADIUS, X, Y );
+        g.drawImage(background, 0,0,this);
         g.setFont(new Font("TimesRoman", Font.BOLD, 30));
         g.setColor ( Color.BLUE );
-        g.drawString("Home: "+Game.getHomeScore(), 10, 100);
+        g.drawString("Home: "+Game.getHomeScore(), 10, 80);
         
       
         
         
         g.setColor ( Color.RED );
-        g.drawString("Away: "+Game.getAwayScore(), 10, 140);
-        g.drawString("Outs: "+Game.outs, 10, 740);
+        g.drawString("Away: "+Game.getAwayScore(), 10, 120);
+        g.drawString("Outs: "+Game.outs, 10, 720);
         if(Game.half==true)
-        	g.drawString("Inning: "+Game.currentInning+ " ▲", 10, 800);
+        	g.drawString("Inning: "+Game.currentInning+ " ▲", 10, 760);
         else
-        	g.drawString("Inning: "+Game.currentInning+" ▼", 10, 800);
+        	g.drawString("Inning: "+Game.currentInning+" ▼", 10, 760);
         g.setFont(new Font("TimesRoman", Font.BOLD, 60));
         if(Game.bases[0]!=null)
-        	g.fillRect(613, 417, 50, 50);
+        	g.fillRect(613, 397, 50, 50);
         if(Game.bases[1]!=null)
-        	g.fillRect(370, 170, 50, 50);
+        	g.fillRect(370, 150, 50, 50);
         if(Game.bases[2]!=null)
-        	g.fillRect(125, 417, 50, 50);
-        if(Game.currentEvent!=null)
-        	g.drawString(Game.currentEvent.name(), 300, 500);
-       
+        	g.fillRect(125, 397, 50, 50);
+//        if(Game.currentEvent!=null){
+//        	
+//        
+//        	g.drawString(Game.currentEvent.name(), 300, 480);
+//        }
         
     }
 }
