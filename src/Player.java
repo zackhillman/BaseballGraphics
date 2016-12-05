@@ -10,9 +10,11 @@ public class Player {
 	private int triples;
 	private int homeruns;
 	
+	private int bOrder;
 	
 	public Player(String n){
 		name = n;
+	
 	}
 	
 	public void doEvent(ActionType a){

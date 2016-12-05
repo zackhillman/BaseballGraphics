@@ -4,162 +4,162 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 
-public class Application implements ActionListener{
+public class Application implements ActionListener {
 
-    private JPanel field;
-    private JButton add;
-    private JButton hit;
-    private JButton edit;
-    private JButton reset;
-    private JTextField nameF;
-    private JTable homeStats;
-    private JTable awayStats;
-    private JList<String> eventLog;
-    
-    JScrollPane eventScroll;
-    JPanel contentPane;
-  //  ListCellRenderer<String> test = eventLog;
-    
-    private static final int WIDTH = 1440;
-    private static final int HEIGHT = 900;
+	private JPanel field;
+	private JButton add;
+	private JButton hit;
+	private JButton edit;
+	private JButton reset;
+	private JTextField nameF;
+	private JTable homeStats;
+	private JTable awayStats;
+	private JList<String> eventLog;
+	private JScrollPane eventScroll;
+	private JPanel contentPane;
 
-    private static final int GAP = 5;
-    
+	private JScrollPane homeScroll;
+	private JScrollPane awayScroll;
 
-    private void displayGUI () {
-        JFrame frame = new JFrame ("");
-        frame.setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
+	private static final int WIDTH = 1440;
+	private static final int HEIGHT = 900;
 
-        contentPane = new JPanel();
-        contentPane.setLayout (null);
-        
-        nameF = new JTextField("");
-        contentPane.add(nameF);
-        nameF.setBounds(800,55,250,30);
-        
-        add = new JButton ( "Add" );
-        add.addActionListener (this);
-        contentPane.add(add);
-        add.setBounds(800, 110, 80, 40);
-        
-        hit = new JButton ( "Hit" );
-        hit.addActionListener (this);
-        contentPane.add (hit );
-        hit.setBounds(890, 110, 80, 40);
-        
-        edit = new JButton ( "Edit" );
-        edit.addActionListener (this);
-        contentPane.add (edit);
-        edit.setBounds(980, 110, 80, 40);
-        
-        field = new Field ();
-        contentPane.add ( field );
-        field.setBounds(0, 0, 790, 810);
-        //new String[][]{"test"}{"test"},Game.getAllPlayers()
-       
-        homeStats =  new JTable();
-        JScrollPane homeScroll = new JScrollPane(homeStats);
-        contentPane.add (homeScroll);
-        homeScroll.setBounds(800, 170, 600, 165);
-        
-        
-        
-        awayStats =  new JTable();
-        JScrollPane awayScroll = new JScrollPane(awayStats);
-        contentPane.add ( awayScroll );
-        awayScroll.setBounds(800, 370, 600, 165);
 
-        awayStats.setRowSelectionAllowed(true);
-        homeStats.setRowSelectionAllowed(true);
-        
-        eventLog = new JList<String>(Game.gameLog);
-        //eventOutput = new JTextArea ("");
-         eventScroll = new JScrollPane(eventLog);
-        contentPane.add (eventScroll);
-        eventScroll.setBounds(800, 550, 600, 240);
-        
-        
-       
-       
-        
+	private Game game;
 
-       
-        frame.setContentPane ( contentPane );
-        frame.setSize(WIDTH, HEIGHT);
-        frame.setLocationByPlatform ( true );
-        frame.setVisible ( true );
-    
-    }
+	public Application() {
+		
+		game = new Game();
+		
+		nameF = new JTextField("");
 
-    public static void main ( String [] args ) {
-        Runnable runnable = new Runnable () {
-            @Override
-            public void run () {
-            	Game.init();
-                new Application ().displayGUI ();
-                
-            }
-        };
-        EventQueue.invokeLater (runnable);
-    }
+		field = new Field(game);
+
+		add = new JButton("Add");
+		edit = new JButton("Edit");
+		hit = new JButton("Hit");
+		reset = new JButton("Reset");
+
+		add.addActionListener(this);
+		hit.addActionListener(this);
+		edit.addActionListener(this);
+		reset.addActionListener(this);
+
+		homeStats = new JTable();
+		awayStats = new JTable();
+
+		eventLog = new JList<String>();
+		eventScroll = new JScrollPane(eventLog);
+		homeScroll = new JScrollPane(homeStats);
+		awayScroll = new JScrollPane(awayStats);
+		
+
+
+		hit.setEnabled(false);
+		awayStats.setRowSelectionAllowed(true);
+		homeStats.setRowSelectionAllowed(true);
+	}
+
+	private void displayGUI() {
+		JFrame frame = new JFrame("");
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+		contentPane = new JPanel();
+		contentPane.setLayout(null);
+		contentPane.add(nameF);
+		contentPane.add(add);
+		contentPane.add(hit);
+		contentPane.add(edit);
+		contentPane.add(reset);
+		contentPane.add(field);
+		contentPane.add(homeScroll);
+		contentPane.add(awayScroll);
+		contentPane.add(eventScroll);
+
+		nameF.setBounds(800, 55, 250, 30);
+		add.setBounds(800, 110, 80, 40);
+		hit.setBounds(890, 110, 80, 40);
+		edit.setBounds(980, 110, 80, 40);
+		reset.setBounds(1060, 110, 80, 40);
+		field.setBounds(0, 0, 790, 810);
+		homeScroll.setBounds(800, 170, 600, 165);
+		awayScroll.setBounds(800, 370, 600, 165);
+		eventScroll.setBounds(800, 550, 600, 240);
+
+		frame.setContentPane(contentPane);
+		frame.setSize(WIDTH, HEIGHT);
+		frame.setLocationByPlatform(true);
+		frame.setVisible(true);
+	}
+
+	public static void main(String[] args) {
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				
+				new Application().displayGUI();
+
+			}
+		};
+		EventQueue.invokeLater(runnable);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
-		
-		if(source==add){
-			if(Game.awayTeamFull())
+
+		if (source == add) {
+			
+			game.add(new Player(nameF.getText()));
+			homeStats.setModel(game.homeTeamTable());
+			awayStats.setModel(game.awayTeamTable());
+			if (game.awayTeamFull()) {
 				add.setEnabled(false);
-			Game.add(new Player(nameF.getText()));
-			homeStats.setModel(Game.homeTeamTable());
-			awayStats.setModel(Game.awayTeamTable());
-
-		}else if(source == hit){
-			Game.hit();
-			field.repaint();
-			JTable currentTeam = null;
-			DefaultTableModel currentModel = null;
-
-			if(Game.half){
-				currentTeam = awayStats;
-				currentModel = Game.awayTeamTable();
-			}else{
-				currentTeam = homeStats;
-				currentModel = Game.awayTeamTable();
-			}
-			int nextIndex = getNextIndex(currentTeam.getSelectedRow());
-			currentTeam.setModel(currentModel);
-			currentTeam.setRowSelectionInterval(nextIndex, nextIndex);
-			
-			eventLog.setModel(Game.gameLog);
-			eventLog.scrollRectToVisible(eventLog.getBounds());
-			eventScroll.getVerticalScrollBar().setValue( eventScroll.getVerticalScrollBar().getMaximum());
-
-			
-			
-		}else if(source == edit){
-			Game.edit(new Player(nameF.getText()));
-			homeStats.setModel(Game.homeTeamTable());
-			awayStats.setModel(Game.awayTeamTable());
+				awayStats.setRowSelectionInterval(0, 0);
+				hit.setEnabled(true);
+				eventLog.setModel(game.gameLog);
 		}
-			
-		
-		
-		
-		
-	}
-	
-	private int getNextIndex(int current){
-		if (current==8)
-			return 0;
-		else
-			return current+1;
-	}
-	
-	
-	
-	
 
+		} else if (source == hit) {
+		
+			game.hit();
+			field.repaint();
+			JTable currentTeamStats = null;
+			DefaultTableModel currentModel = null;
+			awayStats.setModel(game.awayTeamTable());
+			homeStats.setModel(game.homeTeamTable());
 
+			doSelection();
+
+			eventLog.setModel(game.gameLog);
+			eventLog.scrollRectToVisible(eventLog.getBounds());
+			eventScroll.getVerticalScrollBar().setValue(eventScroll.getVerticalScrollBar().getMaximum());
+		
+		} else if (source == edit) {
+			game.edit(new Player(nameF.getText()));
+			homeStats.setModel(game.homeTeamTable());
+			awayStats.setModel(game.awayTeamTable());
+			doSelection();
+		} else if (source == reset) {
+			game = new Game();
+		}
+
+	}
+
+	private void doSelection() {
+		if (game.half) {
+
+			// awayStats.setModel(game.awayTeamTable());
+			awayStats.setRowSelectionInterval(game.getAwayIndex(), game.getAwayIndex());
+			homeStats.removeRowSelectionInterval(0, 8);
+		} else {
+			// homeStats.setModel(game.homeTeamTable());
+
+			homeStats.setRowSelectionInterval(game.getHomeIndex(), game.getHomeIndex());
+			awayStats.removeRowSelectionInterval(0, 8);
+		}
+	}
+
+	
 
 }

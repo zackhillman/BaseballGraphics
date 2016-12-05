@@ -11,6 +11,8 @@ public class Team {
 	private LinkedList<Player> substituteList;
 	private final int TEAM_SIZE = 9;
 	
+	private int currentBatter;
+	
 
 	
 	private int score;
@@ -20,6 +22,7 @@ public class Team {
 		substituteList = new LinkedList<Player>();
 		playerCount = 0;
 		score = 0;
+		currentBatter = 1;
 	}
 	
 	public void addPlayer(Player p){
@@ -43,6 +46,11 @@ public class Team {
 	public void doHit(ActionType a){
 			battingOrder.getCurrent().doEvent(a);
 			battingOrder.doNext();
+			
+			if(currentBatter == 9)
+				currentBatter = 1;
+			else
+				currentBatter++;
 	}
 	
 	public void addScore(int amt){
@@ -69,6 +77,10 @@ public class Team {
 	
 	public CircleLinkedList<Player> getOrder(){
 		return battingOrder;
+	}
+	
+	public int getBatterNumber(){
+		return currentBatter;
 	}
 	
 	

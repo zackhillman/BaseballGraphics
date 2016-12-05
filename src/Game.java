@@ -1,42 +1,30 @@
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.util.Random;
 
-import javax.imageio.ImageIO;
+import java.util.Random;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public class Game  {
 
-	private final static int INNINGS = 9;
-	private final static int BOX_LENGTH = 37;
+	private final   int INNINGS = 9;
 	private final int OUTS = 3;
 	
-	private static Team homeTeam;
-	private static Team awayTeam;
+	private  Team homeTeam;
+	private  Team awayTeam;
 	
-	public static boolean half; //Top = true Bottom = false
-	public static int currentInning; 
+	public  boolean half; //Top = true Bottom = false
+	public  int currentInning; 
 	
-	public static Player[] bases;
-	
-	private JTextField nameF;
-	
-	public static int outs;
-	
-	public static ActionType currentEvent;
-	
-	public static boolean gameOver;
+	public  Player[] bases;
 
-	public static DefaultListModel<String> gameLog;
+	public   int outs;
+	
+	public   ActionType currentEvent;
+	
+	public   boolean gameOver;
 
-	public static void init(){
+	public   DefaultListModel<String> gameLog;
+
+	public Game(){
 		
 		bases = new Player[4];
 		currentInning = 1;
@@ -46,22 +34,21 @@ public class Game  {
 		half = true;
 		gameOver = false;
 		addDivider();
-		//gameLog.
 	}
 	
-	public static void add(Player p){
+	public   void add(Player p){
 		if(!homeTeam.isFull())
 			homeTeam.addPlayer(p);
 		else
 			awayTeam.addPlayer(p);
 	}
 	
-	public static void edit(Player p){
+	public   void edit(Player p){
 		getTeamAtBat().editPlayer(p);
 		System.out.println(p);
 	}
 	
-	public static void hit(){
+	public   void hit(){
 		if(!gameOver){
 			currentEvent = getRandom();
 			
@@ -74,7 +61,7 @@ public class Game  {
 		//═
 	}
 
-	private static void addDivider(){
+	private   void addDivider(){
 		String halfS = "Top";
 		if(!half) halfS = "Bottom";
 		String currentI= currentInning+getEnd(currentInning);
@@ -84,8 +71,16 @@ public class Game  {
 
 	}
 	
+	public   int getHomeIndex(){
+		return homeTeam.getBatterNumber()-1;
+	}
 	
-	private static String getEnd(int ci) {
+	public   int getAwayIndex(){
+		return awayTeam.getBatterNumber()-1;
+	}
+	
+	
+	private   String getEnd(int ci) {
 		
 		switch(ci){
 			case 1: return "st";	
@@ -96,7 +91,7 @@ public class Game  {
 		
 	}
 
-	private static ActionType getRandom(){
+	private   ActionType getRandom(){
 		Random r = new Random();
 		int num = r.nextInt(99)+1;
 		
@@ -112,26 +107,13 @@ public class Game  {
 	        return randomType;
 	}
 	
-	private static void doAction(ActionType a){
+	private   void doAction(ActionType a){
 		System.out.println(a);
-		if(a == ActionType.OUT){
-			outs++;
-			if(outs==3){
-				
-				if(currentInning==INNINGS&&homeTeam.getScore()>awayTeam.getScore()){
-					gameOver = true;
-				}else{
-					half = !half;
-					if(half)
-						currentInning++;
-					outs = 0;
-					bases = new Player[4];
-					addDivider();
-				}
-			}
-		}
-	//	ActionType randomAction = a;
 		getTeamAtBat().doHit(a);
+		if(a == ActionType.OUT){
+			doOut();
+		}
+		
 		switch(a){
 		
 		case WALK: incrementBases(1);
@@ -147,12 +129,29 @@ public class Game  {
 		}
 	}
 
-		private static void reset() {
+	private   void doOut(){
+		outs++;
+		if(outs==3){
+			if(currentInning==INNINGS&&!half){
+				gameOver = true;
+			}else{
+	
+				half = !half;
+				if(half)
+					currentInning++;
+				outs = 0;
+				bases = new Player[4];
+				addDivider();
+			}
+		}
+	}
+	
+		private   void reset() {
 		// TODO Auto-generated method stub
 		
 	}
 
-		private static Team getTeamAtBat(){
+		private   Team getTeamAtBat(){
 			if(half){
 			//	System.out.println("away");
 				return awayTeam;
@@ -161,50 +160,116 @@ public class Game  {
 				return homeTeam;
 					}
 		
-		private static void incrementBases(int amt){
+		private   void incrementBases(int amt){
 		
 			Player[] newBases = new Player[4];
 			for(int i = 0;i<4;i++){
 				if(i+amt<3)
 					 newBases[i+amt] =  bases[i];
-				else if (bases[i]!=null||i+amt==7)
+				else if (bases[i]!=null||i+amt==7){
 					getTeamAtBat().addScore(1);
+				}
 			}
-		//	for(int i = 0;i<4;i++){
 			bases = newBases;
 			if(amt<4)
 				bases[amt-1]  = getTeamAtBat().getCurrent();
 		}
 	
-		public static int getHomeScore(){
+		public   int getHomeScore(){
 			return homeTeam.getScore();
 		}
 		
-		public static int getAwayScore(){
+		public   int getAwayScore(){
 			return awayTeam.getScore();
 		}
-	
-//		public static String[] getAllPlayers(){
-//			String [] playerNames = new String[18];
-//			int index = 0;
-//			while(index < 9){
-//				Player[] players = homeTeam.getOrder().toArray();
-//				playerNames[index] = players[index].getName();
-//				
-//			}
-//			return playerNames;
-//		}
-	
-		public static DefaultTableModel homeTeamTable(){
+
+		public   DefaultTableModel homeTeamTable(){
 			return homeTeam.toTable();
 		}
 		
-		public static DefaultTableModel awayTeamTable(){
+		public   DefaultTableModel awayTeamTable(){
 			return awayTeam.toTable();
 		}
 		
-		public static boolean awayTeamFull(){
+		public   boolean awayTeamFull(){
 			return awayTeam.isFull();
+		}
+
+		/**
+		 * @return the innings
+		 */
+		public   int getInnings() {
+			return INNINGS;
+		}
+
+		/**
+		 * @return the oUTS
+		 */
+		public int getOUTS() {
+			return OUTS;
+		}
+
+		/**
+		 * @return the homeTeam
+		 */
+		public   Team getHomeTeam() {
+			return homeTeam;
+		}
+
+		/**
+		 * @return the awayTeam
+		 */
+		public   Team getAwayTeam() {
+			return awayTeam;
+		}
+
+		/**
+		 * @return the half
+		 */
+		public   boolean isHalf() {
+			return half;
+		}
+
+		/**
+		 * @return the currentInning
+		 */
+		public   int getCurrentInning() {
+			return currentInning;
+		}
+
+		/**
+		 * @return the bases
+		 */
+		public   Player[] getBases() {
+			return bases;
+		}
+
+		/**
+		 * @return the outs
+		 */
+		public   int getOuts() {
+			return outs;
+		}
+
+		/**
+		 * @return the currentEvent
+		 */
+		public   ActionType getCurrentEvent() {
+			return currentEvent;
+		}
+
+		/**
+		 * @return the gameOver
+		 */
+		public   boolean isGameOver() {
+			return gameOver;
+		}
+
+		/**
+		 * @return the gameLog
+		 */
+		public   DefaultListModel<String> getGameLog() {
+			return gameLog;
 		}
 
 	

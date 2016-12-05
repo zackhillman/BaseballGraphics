@@ -8,7 +8,7 @@ public class CircleLinkedList<T> implements Iterable<T> {
 	
 	public CircleLinkedList(){
 		head = null;
-		current = head;
+		current  = head;
 	}
 	/**
 	 * This method adds an element to the end of the linked list 
@@ -20,7 +20,7 @@ public class CircleLinkedList<T> implements Iterable<T> {
 			head.setNext(head);
 			current = head;
 		}else{
-			ListNode<T> currentNode = head.getNext();
+			ListNode<T> currentNode = head;
 			while(currentNode.getNext()!=head){
 				currentNode = currentNode.getNext();
 			}
@@ -111,8 +111,11 @@ public class CircleLinkedList<T> implements Iterable<T> {
 		 * 			false if a next node does not exist
 		 */
 		public boolean hasNext() {
-			if(current.getValue() ==null)
+			if(current.getNext()==null)
+				return false;
+			if(current.getValue() == null)
 				return true;
+			
 			return current.getNext()!=head;
 		}
 	
