@@ -5,23 +5,27 @@ import javax.swing.table.DefaultTableModel;
 
 public class Game {
 
-	private final int INNINGS = 9;
-	private final int OUTS = 3;
+	
+	private final int INNINGS = 9; //Holds value for max number of innings
+	private final int OUTS = 3; //Holds value for max number of outs
 
-	private Team homeTeam;
-	private Team awayTeam;
+	private Team homeTeam; //Holds reference to the home team
+	private Team awayTeam; //Holds reference to the away team
 
 	private boolean half; // Top = true Bottom = false
-	private int currentInning;
+	private int currentInning;  //Value of the current inning
 
-	private Player[] bases;
+	private Player[] bases; //Stores information for the 4 bases
 
-	private int currentOuts;
+	private int currentOuts; //Value of the current number of outs
 
-	private boolean gameOver;
+	private boolean gameOver; //If the game is over = true, else = false
 
-	private DefaultListModel<String> gameLog;
+	private DefaultListModel<String> gameLog; //Stores the information for the game log
 
+	/**
+	 * This is the constructor method, it instantiates the instance variables.
+	 */
 	public Game() {
 
 		bases = new Player[4];
@@ -34,18 +38,30 @@ public class Game {
 		addDivider();
 	}
 
+	/**
+	 * This method adds a player to the home team until it is full.
+	 * Once full, the players are added to the away team.
+	 * @param p- the Player being added
+	 */
 	public void add(Player p) {
 		if (!homeTeam.isFull())
 			homeTeam.addPlayer(p);
 		else
 			awayTeam.addPlayer(p);
 	}
-
+	/**
+	 * This method edits the current player at bat. The current player
+	 * is replaces with a new batter. And the old batter is added to the sub list
+	 * @param p- the New player being subbed in
+	 */
 	public void edit(Player p) {
 		getTeamAtBat().editPlayer(p);
 		System.out.println(p);
 	}
-
+	
+	/**
+	 * This method 
+	 */
 	public void hit() {
 		if (!gameOver) {
 			ActionType currentEvent = getRandom();

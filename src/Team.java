@@ -35,7 +35,6 @@ public class Team {
 		substituteList.add(battingOrder.getCurrent());
 		System.out.println(battingOrder.getCurrent());
 		battingOrder.set(p);
-
 	}
 
 	public int getPlayerCount() {
