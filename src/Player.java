@@ -10,14 +10,12 @@ public class Player {
 	private int triples;
 	private int homeruns;
 	
-	private int bOrder;
-	
 	public Player(String n){
 		name = n;
 	
 	}
 	
-	public void doEvent(ActionType a){
+	public void addHit(ActionType a){
 		switch(a){
 		
 			case OUT: outs++;
@@ -34,24 +32,6 @@ public class Player {
 				break;
 		
 		}
-	}
-	
-	public String toString(){
-		String str = "\nName: " + name;
-		str += "\nOuts: " + outs;
-		str += "\nWalks: " + walks;
-		str += "\nSingles: " + singles;
-		str += "\nDoubles: " + doubles;
-		str += "\nTriples: " + triples;
-		str += "\nHomeruns: " + homeruns;
-		
-		return str;
-	
-		
-	}
-	
-	public String getName(){
-		return name;
 	}
 	
 	public Object[] toArray(){

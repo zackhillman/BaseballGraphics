@@ -38,7 +38,7 @@ public class CircleLinkedList<T> implements Iterable<T> {
 	 * @return- the current T element
 	 */
 	public T getCurrent(){
-	//	System.out.println(current);
+	
 		return current.getValue();    
 	}
 	
@@ -50,17 +50,6 @@ public class CircleLinkedList<T> implements Iterable<T> {
 			current = current.getNext();
 	}
 	
-	private int getSize(){
-		if(head ==null)return 0;
-		ListNode<T> currentNode = head;
-		int count= 0;
-		while(currentNode.getNext()!=head){
-			currentNode = currentNode.getNext();
-			count++;
-		}
-		return count;
-	}		
-	
 	public String toString(){
 		ListNode<T> currentNode = head;
 		String str = "\n\n"+currentNode.getValue().toString();
@@ -71,17 +60,6 @@ public class CircleLinkedList<T> implements Iterable<T> {
 		}
 		return str;
 	}
-//	public T[] toArray(){
-//		ListNode<T> currentNode = head;
-//		Object[] array = new Object[getSize()];
-//		T[] newArray = (T[])array;
-//		for(int i = 0;i<getSize();i++){
-//			newArray[i] = currentNode.getValue();
-//			currentNode = currentNode.getNext();
-//		}
-//		return newArray;
-//	}
-	
 	
 	public Iterator<T> iterator() {
 		// TODO Auto-generated method stub

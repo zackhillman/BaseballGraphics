@@ -6,7 +6,7 @@ import javax.swing.table.TableCellEditor;
 
 public class Application implements ActionListener {
 
-	private JPanel field;
+	private Field field;
 	private JButton add;
 	private JButton hit;
 	private JButton edit;
@@ -117,21 +117,17 @@ public class Application implements ActionListener {
 				add.setEnabled(false);
 				awayStats.setRowSelectionInterval(0, 0);
 				hit.setEnabled(true);
-				eventLog.setModel(game.gameLog);
+				eventLog.setModel(game.getGameLog());
 		}
 
 		} else if (source == hit) {
 		
 			game.hit();
 			field.repaint();
-			JTable currentTeamStats = null;
-			DefaultTableModel currentModel = null;
 			awayStats.setModel(game.awayTeamTable());
 			homeStats.setModel(game.homeTeamTable());
-
 			doSelection();
-
-			eventLog.setModel(game.gameLog);
+			eventLog.setModel(game.getGameLog());
 			eventLog.scrollRectToVisible(eventLog.getBounds());
 			eventScroll.getVerticalScrollBar().setValue(eventScroll.getVerticalScrollBar().getMaximum());
 		
@@ -142,12 +138,22 @@ public class Application implements ActionListener {
 			doSelection();
 		} else if (source == reset) {
 			game = new Game();
+			field.setGame(game);
+			hit.setEnabled(false);
+			add.setEnabled(true);
+			awayStats.repaint();
+			homeStats.repaint();
+			homeStats.setModel(game.homeTeamTable());
+			awayStats.setModel(game.awayTeamTable());
+			eventLog.setModel(game.getGameLog());
+			field.repaint();
+		 
 		}
 
 	}
 
 	private void doSelection() {
-		if (game.half) {
+		if (game.getHalf()) {
 
 			// awayStats.setModel(game.awayTeamTable());
 			awayStats.setRowSelectionInterval(game.getAwayIndex(), game.getAwayIndex());
