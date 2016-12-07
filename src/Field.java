@@ -1,10 +1,8 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
 
@@ -13,43 +11,39 @@ import javax.swing.JPanel;
 
 public class Field extends JPanel {
 
-	private static final int WIDTH = 790;
-	private static final int HEIGHT = 900;
-	private Game game;
+	private final int WIDTH = 790; //The set width for this JPanel
+	private final int HEIGHT = 900; //The set height for this JPanel
+	private Game game; //The current game object
 
-	private boolean isActive;
+	private Image background;// The image for the field
 
-	private Image background;
-
+	/**
+	 * This is the constructor. It instantiates the instance variables. 
+	 * And gets the background from the file system
+	 * @param g- the current game object
+	 */
 	public Field(Game g) {
 		game = g;
 		setOpaque(true);
 
-		isActive = false;
 		try {
 			background = ImageIO.read(new File("backgroundbaseball.jpg"));
 		} catch (IOException e) {
 		}
 	}
 
+	/**
+	 * This method sets the current game object.
+	 * @param g- the new game object
+	 */
 	public void setGame(Game g) {
 		game = g;
-
 	}
 
-	public boolean setState() {
-
-		repaint();
-
-		return isActive;
-	}
-
-	@Override
-	public Dimension getPreferredSize() {
-		return new Dimension(WIDTH, HEIGHT);
-	}
-
-	@Override
+	/**
+	 * This method paints the field on the GUI
+	 * @param- the graphics object of the JFrame
+	 */
 	protected void paintComponent(Graphics g) {
 
 		super.paintComponent(g);
@@ -77,9 +71,12 @@ public class Field extends JPanel {
 				g.drawString("Winner: Away Team", 160, 400);
 		}
 		drawScoreboard(g);
-
 	}
 
+	/**
+	 * This method draws the actual scoreboard section of the GUI
+	 * @param g- the JFrame graphics object
+	 */
 	private void drawScoreboard(Graphics g) {
 		g.setColor(Color.darkGray);
 		g.fillRoundRect(10, 650, 220, 130, 30, 30);

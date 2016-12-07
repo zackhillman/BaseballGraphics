@@ -3,12 +3,13 @@ import java.util.ListIterator;
 
 public class LinkedList<T> implements Iterable<T>{
 
-	private ListNode<T> head;
-	private ListNode<T> current;
+	private ListNode<T> head; //Holds reference to the linkedlist's head
 	
+	/**
+	 * This is the constructor method, it sets head to null
+	 */
 	public LinkedList() {
 		head = null;
-		current = head;
 	}
 	/**
 	 * This method adds an element to the end of the linkedlist 
@@ -25,23 +26,12 @@ public class LinkedList<T> implements Iterable<T>{
 				currentNode.setNext(new ListNode<T>(element,null));	
 		}
 	}
-	/**
-	 * This method gets the current element in the linked list
-	 * @return- the current T element
-	 */
-	public T getCurrent(){
-		return current.getValue();
-	}
 	
 	/**
-	 * This method increments the linked list current
+	 * This method returns the iterator for a LinkedList
+	 * @return- the new iterator
 	 */
-	public void doNext(){
-		current = current.getNext();
-	}
-	
 	public Iterator<T> iterator() {
-		
 		return new LinkedListIterator();
 	}
 	
@@ -51,13 +41,11 @@ public class LinkedList<T> implements Iterable<T>{
 	public class LinkedListIterator implements Iterator<T>{
 		//Instance Variables
 		private ListNode<T> current; //Tracks the current node
-		private boolean removable; //If removable, can use the remove method
 		
 		/**
 		 * This is the constructor, removable is set to false, current and previous are instantiated
 		 */
 		public LinkedListIterator(){
-			removable = false;
 			current = new ListNode<T>(null, head);			
 		}
 		/**
@@ -67,7 +55,6 @@ public class LinkedList<T> implements Iterable<T>{
 		 */
 		public boolean hasNext() {
 			return current.getNext() !=null;
-				
 		}
 	
 		/**
@@ -75,12 +62,15 @@ public class LinkedList<T> implements Iterable<T>{
 		 * @return- the node after the current	
 		 */
 		public T next() {
-			removable = true;
 			current = current.getNext();
-			return current.getValue();
-			
+			return current.getValue();		
+		}
+		
+		/**
+		 * Throws error, unsupported operation
+		 */
+		public void remove(){
+			throw new UnsupportedOperationException();		
 		}
 	}
-
-
 }

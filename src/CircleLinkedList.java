@@ -1,11 +1,14 @@
 import java.util.Iterator;
-import java.util.ListIterator;
 
 public class CircleLinkedList<T> implements Iterable<T> {
 
-	private ListNode<T> head;
-	private ListNode<T> current;
+	private ListNode<T> head; //used to track the head of the linked list
+	private ListNode<T> current; //used to track the current node
 	
+	/**
+	 * This is the constructor method, it sets head to null
+	 * and sets the current node to head
+	 */
 	public CircleLinkedList(){
 		head = null;
 		current  = head;
@@ -24,21 +27,23 @@ public class CircleLinkedList<T> implements Iterable<T> {
 			while(currentNode.getNext()!=head){
 				currentNode = currentNode.getNext();
 			}
-				currentNode.setNext(new ListNode<T>(element,head));	
+			currentNode.setNext(new ListNode<T>(element,head));	
 		}
 	}
 	
+	/**
+	 * This method replaces the current node's value with a new one
+	 * @param newElement- the new element for the node
+	 */
 	public void set(T newElement){
 		current.setValue(newElement);
 	}
 	
-
 	/**
 	 * This method gets the current element in the linked list
 	 * @return- the current T element
 	 */
 	public T getCurrent(){
-	
 		return current.getValue();    
 	}
 	
@@ -46,21 +51,13 @@ public class CircleLinkedList<T> implements Iterable<T> {
 	 * This method increments the linked list current
 	 */
 	public void doNext(){
-		
-			current = current.getNext();
+		current = current.getNext();
 	}
 	
-	public String toString(){
-		ListNode<T> currentNode = head;
-		String str = "\n\n"+currentNode.getValue().toString();
-		
-		while(currentNode.getNext()!=head){
-			currentNode = currentNode.getNext();		
-			str+="\n\n"+currentNode.getValue().toString();
-		}
-		return str;
-	}
-	
+	/**
+	 * This method declares a new LinkedListIterator as the iterator for a circle linked list
+	 * @return- the new iterator
+	 */
 	public Iterator<T> iterator() {
 		// TODO Auto-generated method stub
 		return new LinkedListIterator();
@@ -73,13 +70,10 @@ public class CircleLinkedList<T> implements Iterable<T> {
 		//Instance Variables
 		private ListNode<T> current; //Tracks the current node
 		
-		private boolean removable; //If removable, can use the remove method
-		
 		/**
-		 * This is the constructor, removable is set to false, current and previous are instantiated
+		 * This is the constructor, current is instantiated
 		 */
 		public LinkedListIterator(){
-			removable = false;
 			current = new ListNode<T>(null, head);
 			
 		}
@@ -93,7 +87,6 @@ public class CircleLinkedList<T> implements Iterable<T> {
 				return false;
 			if(current.getValue() == null)
 				return true;
-			
 			return current.getNext()!=head;
 		}
 	
@@ -102,7 +95,6 @@ public class CircleLinkedList<T> implements Iterable<T> {
 		 * @return- the node after the current	
 		 */
 		public T next() {
-			removable = true;
 			current = current.getNext();
 			return current.getValue();
 			
@@ -113,8 +105,5 @@ public class CircleLinkedList<T> implements Iterable<T> {
 		public void remove(){
 			throw new UnsupportedOperationException();		
 		}
-		
-		
 	}
-	
 }
